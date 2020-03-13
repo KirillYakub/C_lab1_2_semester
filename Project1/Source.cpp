@@ -201,7 +201,175 @@ void medium()
 	cout << "Время полета: " << number[max_fligth_time].fly_time_hours << ":" << number[max_fligth_time].fly_time_minutes << endl << endl;
 }
 
+void hard()
+{
+	
+    struct birthday
+	{
+		int number;
+		int mounth;
+		int year;
+	};
 
+	struct FIO
+	{
+		char name[32];
+		char surname[56];
+		char patronymic[56];
+	};
+
+	struct NOTE2
+	{
+		FIO Name;
+		long long int TELE;
+		birthday DATE;
+	};
+
+	struct NOTE1
+	{
+		NOTE2 Name1;
+		NOTE2 TELE1;
+		NOTE2 DATE1;
+		long long int TELE2;
+		int count = 0;
+		int figure1;
+		int figure2;
+		int figure3;
+	};
+	
+	const int N = 2;
+	NOTE1 BLOCK2[N];
+	
+    for (int i = 0; i < N; i++)
+	{
+		cout << "Введите Фамилию: ";
+		cin.ignore(cin.rdbuf()->in_avail());
+		cin.getline(BLOCK2[i].Name1.Name.surname, 56);
+		cout << endl;
+
+		cout << "Введите Имя: ";
+		cin.ignore(cin.rdbuf()->in_avail());
+		cin.getline(BLOCK2[i].Name1.Name.name, 32);
+		cout << endl;
+
+		cout << "Введите Отчество: ";
+		cin.ignore(cin.rdbuf()->in_avail());
+		cin.getline(BLOCK2[i].Name1.Name.patronymic, 56);
+		cout << endl << endl;
+
+		//так как стандартный номер телефона состоит из 11 или 12 цифр, учитывая первые 1-2 цифры номера страны, то вводим ограничения;
+		do 
+		{
+			BLOCK2[i].count = 0;
+			do
+			{
+				//находим количество цифр в номере;
+				cout << "Введите Номер Телефона: ";
+				cin.ignore(cin.rdbuf()->in_avail());
+				cin >> BLOCK2[i].TELE1.TELE;
+				BLOCK2[i].TELE2 = BLOCK2[i].TELE1.TELE; /*присваевам значение другой переменной
+														так как в цикле делим номер для нахождения
+														количества цифр*/
+				do
+				{
+					BLOCK2[i].count++;
+				} while ((BLOCK2[i].TELE1.TELE /= 10) > 0);
+			} while (BLOCK2[i].count <= 10); //если номер является 10-ным числом и меньше;
+		} while (BLOCK2[i].count >= 13); //если номер является 13-ным числом и меньше;
+		cout << endl;
+        cout << "Количество цифр в числе: "<< BLOCK2[i].count << endl << endl;
+		
+		cout << "Введите День Рождения: ";
+		cin >> BLOCK2[i].DATE1.DATE.number;
+		cout << endl;
+
+		cout << "Введите Номер Месяца: ";
+		cin >> BLOCK2[i].DATE1.DATE.mounth;
+		cout << endl;
+
+		cout << "Введите Год: ";
+		cin >> BLOCK2[i].DATE1.DATE.year;
+		cout << endl << endl;
+		
+	}
+
+	//находим первые 3 цифры номера телефона;
+    for (int i = 0; i < N; i++)
+	{
+		if (BLOCK2[i].count == 12)
+		{
+			BLOCK2[i].figure1 = BLOCK2[i].TELE2 / 100000000000;
+			BLOCK2[i].figure2 = (BLOCK2[i].TELE2 / 10000000000) % 10;
+			BLOCK2[i].figure3 = (BLOCK2[i].TELE2 / 1000000000) % 10;
+		}
+
+		if (BLOCK2[i].count == 11)
+		{
+			BLOCK2[i].figure1 = BLOCK2[i].TELE2 / 10000000000;
+			BLOCK2[i].figure2 = (BLOCK2[i].TELE2 / 1000000000) % 10;
+			BLOCK2[i].figure3 = (BLOCK2[i].TELE2 / 100000000) % 10;
+		}
+
+		cout << "Первые 3 числа " << i + 1 << " номера: " << BLOCK2[i].figure1 << ", " << BLOCK2[i].figure2 << ", " << BLOCK2[i].figure3 << endl;
+    }
+
+	cout << endl << endl;
+
+	NOTE1 temp;
+
+	//сортируем по первым 3-м цифрам;
+	for (int i = 0; i < N; i++)
+	{
+		for (int i = 0; i < N - 1; i++)
+		{
+            if (BLOCK2[i].figure1 > BLOCK2[i + 1].figure1 && BLOCK2[i].figure2 > BLOCK2[i + 1].figure2 && BLOCK2[i].figure3 > BLOCK2[i + 1].figure3)
+			{
+				temp = BLOCK2[i];
+				BLOCK2[i] = BLOCK2[i + 1];
+				BLOCK2[i + 1] = temp;
+			}
+		}
+	}
+
+	cout << "Отсортированный массив структур по первым 3 цифрам номера телефона: " << endl << endl;
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << "ФИО: " << BLOCK2[i].Name1.Name.surname << " " << BLOCK2[i].Name1.Name.name << " " << BLOCK2[i].Name1.Name.patronymic << endl;
+		cout << "Номер телефона: +" << BLOCK2[i].TELE2 << endl;
+		cout << "Дата Рождения: " << BLOCK2[i].DATE1.DATE.number << "." << BLOCK2[i].DATE1.DATE.mounth << "." << BLOCK2[i].DATE1.DATE.year;
+		cout << endl << endl;
+	}
+
+	cout << "Вывод информации о человеке, чья фамилия введена с клавиатуры. Если такого нет - будет выведено сообщение" << endl;
+	cout << "Введите фамилию: " << endl;
+
+	string surname;
+	
+	//вводим переменную count1, что-бы в случае если человек с введенной фамилией уже найден не выводилось сообщение при следующей итерации;
+	int count1 = 0;
+
+	cin >> surname;
+
+	cout << endl;
+
+	for (int i = 0; i < N; i++)
+	{
+		if (surname == BLOCK2[i].Name1.Name.surname)
+		{
+			cout << "Информация о человеке с фамилией " << surname << ": " << endl;
+			cout << "ФИО: " << BLOCK2[i].Name1.Name.surname << " " << BLOCK2[i].Name1.Name.name << " " << BLOCK2[i].Name1.Name.patronymic << endl;
+			cout << "Номер телефона: +" << BLOCK2[i].TELE2 << endl;
+			cout << "Дата Рождения: " << BLOCK2[i].DATE1.DATE.number << "." << BLOCK2[i].DATE1.DATE.mounth << "." << BLOCK2[i].DATE1.DATE.year << endl;
+			count1++;
+		}
+
+		else if (surname != BLOCK2[i].Name1.Name.surname && i == N - 1 && count1 == 0)
+		{
+			cout << "Нет человека с такой фамилией" << endl << endl;
+		}
+	}
+}
 
 int main()
 {
@@ -209,20 +377,25 @@ int main()
 	int number;
 
 	setlocale(LC_ALL, "ru");
-	
+
 	cout << "Вариант № 20" << endl;
-	cout << "Введите номер 1(easy) или 2(medium): ";
-    
+	cout << "Введите номер 1(easy) или 2(medium) или 3(hard): ";
+
 	cin >> number;
-	
+
 	if (number == 1)
 	{
 		easy();
 	}
-	
-	if(number == 2)
+
+	if (number == 2)
 	{
 		medium();
+	}
+
+	if (number == 3)
+	{
+		hard();
 	}
 
 }
