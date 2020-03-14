@@ -71,7 +71,6 @@ void easy()
 
 }
 
-
 void medium()
 {
 
@@ -199,48 +198,117 @@ void medium()
 	cout << "Марка: " << number[max_fligth_time].mark << endl;
 	cout << "Дистанция: " << number[max_fligth_time].distance << endl;
 	cout << "Время полета: " << number[max_fligth_time].fly_time_hours << ":" << number[max_fligth_time].fly_time_minutes << endl << endl;
+
+}
+
+//начало сложного уровня;
+/*Создать структуру NOTE2 с ФИО, полной датой рождения и номером телефона.
+Создать массив BLOCK2 типа NOTE1, вывести данные отсортированные по первым 3-м цифрам номера телефона.
+Также вывести информацию о человеке, фамилия которого введена с клавиатуры. Если такого нет - выдать сообщение*/
+struct birthday
+{
+	int day;
+	int month;
+	int year;
+	bool isCorrect();
+};
+
+struct FIO
+{
+	char name[32];
+	char surname[56];
+	char patronymic[56];
+};
+
+struct NOTE2
+{
+	FIO Name;
+	long long int TELE;
+	birthday DATE;
+};
+
+struct NOTE1
+{
+	NOTE2 Name1;
+	NOTE2 TELE1;
+	NOTE2 DATE1;
+	long long int TELE2;
+	int count = 0;
+	int figure1;
+	int figure2;
+	int figure3;
+};
+
+bool birthday::isCorrect()
+{
+	bool result = false;
+
+	switch (month)
+	{
+
+	case 1:
+	case 3:
+	case 5:
+	case 7:
+	case 8:
+	case 10:
+	case 12:
+	{
+		if ((day <= 31) && (day > 0))
+			result = true;
+		break;
+	}
+
+	case 4:
+	case 6:
+	case 9:
+	case 11:
+	{
+		if ((day <= 30) && (day > 0))
+			result = true;
+		break;
+	}
+
+	case 2:
+	{
+		if (year % 4 != 0)
+		{
+			if ((day <= 28) && (day > 0))
+				result = true;
+		}
+		else
+			if (year % 400 == 0)
+			{
+				if ((day <= 29) && (day > 0))
+					result = true;
+			}
+			else
+				if ((year % 100 == 0) && (year % 400 != 0))
+				{
+					if ((day == 28) && (day > 0))
+						result = true;
+				}
+				else
+					if ((year % 4 == 0) && (year % 100 != 0))
+						if ((day <= 29) && (day > 0))
+							result = true;
+		break;
+	}
+
+	default:
+		result = false;
+	}
+
+	return result;
 }
 
 void hard()
 {
 	
-    struct birthday
-	{
-		int number;
-		int mounth;
-		int year;
-	};
-
-	struct FIO
-	{
-		char name[32];
-		char surname[56];
-		char patronymic[56];
-	};
-
-	struct NOTE2
-	{
-		FIO Name;
-		long long int TELE;
-		birthday DATE;
-	};
-
-	struct NOTE1
-	{
-		NOTE2 Name1;
-		NOTE2 TELE1;
-		NOTE2 DATE1;
-		long long int TELE2;
-		int count = 0;
-		int figure1;
-		int figure2;
-		int figure3;
-	};
-	
-	const int N = 2;
+    const int N = 2;
 	NOTE1 BLOCK2[N];
 	
-    for (int i = 0; i < N; i++)
+	for (int i = 0; i < N; i++)
 	{
 		cout << "Введите Фамилию: ";
 		cin.ignore(cin.rdbuf()->in_avail());
@@ -279,18 +347,23 @@ void hard()
 		cout << endl;
         cout << "Количество цифр в числе: "<< BLOCK2[i].count << endl << endl;
 		
-		cout << "Введите День Рождения: ";
-		cin >> BLOCK2[i].DATE1.DATE.number;
-		cout << endl;
+		//проверка точности ввода даты;
+		do
+		{
 
-		cout << "Введите Номер Месяца: ";
-		cin >> BLOCK2[i].DATE1.DATE.mounth;
-		cout << endl;
+			cout << "Введите День Рождения: ";
+			cin >> BLOCK2[i].DATE1.DATE.day;
+			cout << endl;
 
-		cout << "Введите Год: ";
-		cin >> BLOCK2[i].DATE1.DATE.year;
-		cout << endl << endl;
-		
+			cout << "Введите Номер Месяца: ";
+			cin >> BLOCK2[i].DATE1.DATE.month;
+			cout << endl;
+
+			cout << "Введите Год: ";
+			cin >> BLOCK2[i].DATE1.DATE.year;
+			cout << endl << endl;
+
+		} while (!BLOCK2[i].DATE1.DATE.isCorrect());
 	}
 
 	//находим первые 3 цифры номера телефона;
@@ -337,7 +410,7 @@ void hard()
 	{
 		cout << "ФИО: " << BLOCK2[i].Name1.Name.surname << " " << BLOCK2[i].Name1.Name.name << " " << BLOCK2[i].Name1.Name.patronymic << endl;
 		cout << "Номер телефона: +" << BLOCK2[i].TELE2 << endl;
-		cout << "Дата Рождения: " << BLOCK2[i].DATE1.DATE.number << "." << BLOCK2[i].DATE1.DATE.mounth << "." << BLOCK2[i].DATE1.DATE.year;
+		cout << "Дата Рождения: " << BLOCK2[i].DATE1.DATE.day << "." << BLOCK2[i].DATE1.DATE.month << "." << BLOCK2[i].DATE1.DATE.year;
 		cout << endl << endl;
 	}
 
@@ -360,7 +433,7 @@ void hard()
 			cout << "Информация о человеке с фамилией " << surname << ": " << endl;
 			cout << "ФИО: " << BLOCK2[i].Name1.Name.surname << " " << BLOCK2[i].Name1.Name.name << " " << BLOCK2[i].Name1.Name.patronymic << endl;
 			cout << "Номер телефона: +" << BLOCK2[i].TELE2 << endl;
-			cout << "Дата Рождения: " << BLOCK2[i].DATE1.DATE.number << "." << BLOCK2[i].DATE1.DATE.mounth << "." << BLOCK2[i].DATE1.DATE.year << endl;
+			cout << "Дата Рождения: " << BLOCK2[i].DATE1.DATE.day << "." << BLOCK2[i].DATE1.DATE.month << "." << BLOCK2[i].DATE1.DATE.year << endl;
 			count1++;
 		}
 
@@ -369,33 +442,42 @@ void hard()
 			cout << "Нет человека с такой фамилией" << endl << endl;
 		}
 	}
+
 }
 
 int main()
 {
 
 	int number;
+	int Correct = 0;
 
 	setlocale(LC_ALL, "ru");
 
 	cout << "Вариант № 20" << endl;
-	cout << "Введите номер 1(easy) или 2(medium) или 3(hard): ";
 
-	cin >> number;
-
-	if (number == 1)
+	do
 	{
-		easy();
-	}
+		cout << "Введите номер 1(easy) или 2(medium) или 3(hard): ";
 
-	if (number == 2)
-	{
-		medium();
-	}
+		cin >> number;
 
-	if (number == 3)
-	{
-		hard();
-	}
+		if (number == 1)
+		{
+			easy();
+			Correct++;
+		}
+
+		if (number == 2)
+		{
+			medium();
+			Correct++;
+		}
+
+		if (number == 3)
+		{
+			hard();
+			Correct++;
+		}
+	} while (Correct == 0);
 
 }
